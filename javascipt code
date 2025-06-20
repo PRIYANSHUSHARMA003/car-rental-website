@@ -1,0 +1,74 @@
+let menu =document.querySelector('#menu-icon');
+let navbar = document.querySelector('.navbar');
+
+menu.onclick = () => {
+    menu.classList.toggle('bx-x');
+    navbar.classList.toggle('active');
+}
+
+window.onscroll = () => {
+    menu.classList.remove('bx-x');
+    navbar.classList.remove('active');
+}
+const sr =ScrollReveal ({
+    distance: '60px',
+    duration: 2500,
+    delay: 400,
+    reset: true
+})
+
+sr.reveal('.text',{delay: 200, origin: 'top'})
+sr.reveal('.form-container form',{delay: 800, origin: 'left'})
+sr.reveal('.heading',{delay: 600, origin: 'top'})
+sr.reveal('.ride-container .box',{delay: 600, origin: 'top'})
+sr.reveal('.service-container .box',{delay: 600, origin: 'top'})
+sr.reveal('.about-container .box',{delay: 600, origin: 'top'})
+sr.reveal('.reviews-container',{delay: 600, origin: 'top'})
+sr.reveal('.newsletter .box',{delay: 400, origin: 'bottom'})
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC7ZSL0iAB4iflC-Lxka3J_Y0sWlcXppHY",
+    authDomain: "carwebsite-b254b.firebaseapp.com",
+    databaseURL: "https://carwebsite-b254b-default-rtdb.firebaseio.com",
+    projectId: "carwebsite-b254b",
+    storageBucket: "carwebsite-b254b.appspot.com",
+    messagingSenderId: "213293513116",
+    appId: "1:213293513116:web:0a5f447029197d6e73b059"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+var contactformDb=firebase.database().ref('contactform');
+
+document.getElementById("contactform").addEventListener("submit", submitForm);
+
+function submitForm(e){
+    e.preventDefault();
+
+    var email = getElementVal("email");
+    var password = getElementVal("passsword");
+    var location = getElementVal("location");
+    var returndate = getElementVal("returndate");
+    var pickupdate = getElementVal("pickupdate"); 
+    
+    saveMessages(email, password, location, returndate, pickupdate);
+
+}
+
+const saveMessages = (email, password, location, returndate, pickupdate) => {
+    var newcontactform = contactformDb.push();
+
+    newcontactform.set({
+        email: email,
+        password: password,
+        location: location,
+        returndate: returndate,
+        pickupdate: pickupdate,
+    });
+}
+
+const getElementVal = (id) => {
+    return document.getElementById(id).value;
+}
+
